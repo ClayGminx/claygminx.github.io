@@ -1,0 +1,1 @@
+AV.init({appId: "WwRUP3R20NUxq5YMODi38ROO-MdYXbMMI", appKey: "694qoA7oUTuxy1aKOexYfQCB"});

@@ -1,0 +1,238 @@
+/***********************************************
+ * 公共
+ ***********************************************/
+ /* modal提示 */
+ #messageModal {top: 30%;}
+
+.modal-header {
+    padding: 7px 15px !important;
+    background-color: #3284cb !important;
+}
+
+.modal-title {
+    color: #FFFFFF;
+    font-size: 1.1rem;
+}
+
+.modal-content {border: none;}
+
+.modal-footer {padding: 7px 15px !important;}
+
+/***********************************************
+ * 书架浏览页
+ ***********************************************/
+/* 警告框 */
+.alert {
+    text-align: center;
+    margin-bottom: 2px !important;
+}
+
+/* 表头 */
+.bookshelf-heading {
+    text-align: center;
+    font-family: "华文新魏","华文隶书","隶书","微软雅黑";
+    font-weight: bold;
+    color: black;
+    font-size: 1.5em;
+    margin: 0.8em 0;
+}
+
+/* 表体 */
+#bookList > table {
+    width: 99%;
+    margin: 0 auto;
+    font-size: 14px;
+}
+
+#bookList thead td {
+    font-weight: bold;
+}
+
+#bookList td,th {
+    white-space: nowrap;
+    border-top: none !important;
+}
+
+/* 分页 */
+#pagination {text-align:center;}
+
+#pagination a:focus {box-shadow: none;}
+
+#pagination ul.pagination {
+    margin-top: 1em;
+    justify-content: center !important;
+}
+
+/* 查找 */
+#searchModal .modal-content {
+    box-shadow: none;
+    -webkit-box-shadow: none;
+    background-color: transparent;
+    border: none;
+    border-radius: 0;
+}
+@media (min-width: 768px) {/* bootstrap screen-sm-min */
+    #searchModal .modal-content {
+        box-shadow: none;
+        -webkit-box-shadow: none;
+    }
+}
+
+#searchModal .modal-content .modal-body {
+    padding: 7px 15px;
+    background-color: #FFFFFF;
+    border-radius: 23px;
+}
+
+#searchModal .modal-content .modal-body table {
+    width: 100%;
+}
+
+#searchModal input {
+    font-family: Consolas, "微软雅黑";
+    border: none;
+    padding: 0;
+    height: 32px;
+    width: 100%
+}
+
+#searchModal input:focus {
+    border: none;
+    outline: none;
+}
+
+#searchModal .modal-content .modal-footer {
+    justify-content: center;
+    border-top: none;
+    background-color: transparent;
+    margin-top: 1em;
+    margin-bottom: 0;
+}
+
+/***********************************************
+ * 书架操作页
+ ***********************************************/
+
+/* 登录 */
+#loginDiv {
+    margin: 1em;
+    align-self: center;
+    z-index: 1;
+    width: 20em;
+    border-radius: 1em;
+    background-color: rgba(255,255,255,.6);
+    padding: 1.5em;
+}
+
+@media screen and (max-width: 320px) {
+    #loginDiv {
+        width: 18em;
+        padding: 1em;
+    }
+}
+
+#loginDiv .header {
+    font-size: 1.5em;
+    font-weight: bold;
+    text-align: center;
+    height: 2em;
+    line-height: 2em;
+    margin-bottom: 1em;
+}
+
+#loginDiv .form-wrapper .input-item {
+    width: 100%;
+    max-width: 272px;
+    margin-bottom: 1.5em;
+    border: none;
+    padding: 0 0.7em;
+    border-bottom: 1px solid rgb(128,125,125);
+    font-size: 0.9em;
+    outline: none;
+    background-color: transparent;
+}
+
+#loginDiv .form-wrapper .btn {
+    text-align: center;
+    background-image: linear-gradient(120deg,#8ec5fc  0%,#e0c3fc  100%);;
+    color: #fff;
+    padding: 10px;
+    width: 100%;
+    max-width: 272px;
+    border: none;
+}
+
+/* 操作体 */
+#operationDiv {
+    width: 100%;
+    padding-top: 0.2em;
+}
+
+@media screen and (max-width: 350px) {
+    #operationDiv {
+        font-size: 0.8em;
+    }
+}
+
+/* 登录信息 */
+#userDiv {
+    padding-left: 0.7em;
+}
+
+/* 导航 */
+ul#operation-select li {width:20%;}
+
+.nav-tabs .nav-item.show .nav-link, .nav-tabs .nav-link.active {
+    background-color: rgba(255, 255, 255, .15);  
+    backdrop-filter: blur(5px);
+    border-bottom-width: 0;
+}
+
+/* 导航内容 */
+.tab-content {
+    display: flex;
+    justify-content: center;
+}
+
+.tab-pane {
+    width: 33%;
+}
+
+.tab-pane .row {
+    flex-wrap: nowrap;
+}
+
+@media screen and (max-width: 575px) {
+    .tab-pane {
+        width: 85%;
+    }
+    .tab-pane .form-group > label {
+        width: 15%;
+    }
+    .tab-pane .form-group > div {
+        width: 85%;
+    }
+}
+
+.col-form-label {
+    white-space: nowrap;
+}
+
+/* 操作表单 */
+#operation-forms {margin-top: 1em;}
+
+#operation-forms button {
+    margin: auto;
+}
+
+#operation-forms input {
+    border: none;
+    border-bottom: 1px solid rgb(128,125,125);
+    outline: none;
+    background-color: transparent;
+    border-radius: 0;
+}
+
+#operation-forms input:focus {
+    box-shadow: none;
+}

@@ -1,0 +1,181 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN" style="height: 100%"><!-- 背景色占满屏幕 -->
+<head>
+    <title>溪水旁共享书架操作</title>
+    <meta charset="UTF-8"/>
+    <meta name="robots" content="nofollow"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png"/>
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png"/>
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png"/>
+    <link rel="mask-icon" href="/images/safari-pinned-tab.svg" color="#222"/>
+    <link rel="stylesheet" href="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/css/bootstrap.min.css">
+    <link rel="stylesheet" href="/sharejs/css/shared.bookshelf.css"/>
+    <script src="https://cdn.staticfile.org/jquery/3.2.1/jquery.min.js"></script>
+    <script src="https://cdn.staticfile.org/popper.js/1.15.0/umd/popper.min.js"></script>
+    <script src="https://cdn.staticfile.org/twitter-bootstrap/4.3.1/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/leancloud-storage@4.10.0/dist/av-live-query-min.js"></script>
+</head>
+<body style="display: flex; justify-content: center; height: 100%; background-image: linear-gradient(120deg, #e0c3fc 0%, #8ec5fc 100%);"><!-- 背景色占满屏幕 -->
+    <!-- 登录 -->
+    <div id="loginDiv" style="display: none;">
+        <form class="form-horizontal" role="form" autocomplete="off" id="loginForm" onsubmit="return false;">
+            <div class="header">管理员登录</div>
+            <div class="form-wrapper">
+                <input type="text" id="username" placeholder="用户名" class="input-item"/>
+                <input type="password" id="password" placeholder="密码" class="input-item"/>
+                <button class="btn" id="loginButton">登录</button>
+            </div>
+        </form>
+    </div>
+    <!-- 管理员操作 -->
+    <div id="operationDiv" style="display: none;">
+        <!-- 当前登录用户 -->
+        <div id="userDiv"><span>当前管理员：</span><span id="currentUser"></span></div>
+        <ul class="nav nav-tabs nav-fill" role="tablist" id="operation-select">
+            <li class="nav-item" role="presentation">
+                <a class="nav-link active" data-toggle="tab" role="tab" aria-selected="true" aria-controls="borrow" id="borrow-tab" href="#borrow">借书</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" data-toggle="tab" role="tab" aria-selected="false" aria-controls="return" id="return-tab" href="#return">还书</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" data-toggle="tab" role="tab" aria-selected="false" aria-controls="add" id="add-tab" href="#add">上架</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" data-toggle="tab" role="tab" aria-selected="false" aria-controls="remove" id="remove-tab" href="#remove">下架</a>
+            </li>
+            <li class="nav-item" role="presentation">
+                <a class="nav-link" data-toggle="tab" role="tab" aria-selected="false" aria-controls="update" id="update-tab" href="#update">更新</a>
+            </li>
+        </ul>
+        <div id="operation-forms" class="tab-content">
+            <!-- 借书表单 -->
+            <div class="tab-pane fade show active" role="tabpanel" aria-labelledby="borrow-tab" id="borrow">
+                <form id="borrowForm" autocomplete="off" onsubmit="return false;">
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label" for="borrowForm-bookNumber">书号</label>
+                        <div class="col-sm-10">
+                            <input type="number" class="form-control" name="number" id="borrowForm-bookNumber"/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label" for="borrowForm-borrower">姓名</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="borrower" id="borrowForm-borrower"/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <button class="btn btn-primary" id="borrowButton">借书</button>
+                    </div>
+                </form>
+            </div>
+            <!-- 还书表单 -->
+            <div class="tab-pane fade" role="tabpanel" aria-labelledby="return-tab" id="return">
+                <form id="returnForm" autocomplete="off" onsubmit="return false;">
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label" for="returnForm-bookNumber">书号</label>
+                        <div class="col-sm-10">
+                            <input type="number" class="form-control" name="number" id="returnForm-bookNumber"/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <button class="btn btn-primary" id="returnButton">还书</button>
+                    </div>
+                </form>
+            </div>
+            <!-- 上架表单 -->
+            <div class="tab-pane fade" role="tabpanel" aria-labelledby="add-tab" id="add">
+                <form id="addForm" autocomplete="off" onsubmit="return false;">
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label" for="addForm-bookName">书名</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="name" id="addForm-bookName"/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label" for="addForm-bookAuthor">作者</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="author" id="addForm-bookAuthor"/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label" for="addForm-bookOwner">书主</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="owner" id="addForm-bookOwner"/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <button class="btn btn-primary" id="addButton">上架</button>
+                    </div>
+                </form>
+            </div>
+            <!-- 下架表单 -->
+            <div class="tab-pane fade" role="tabpanel" aria-labelledby="remove-tab" id="remove">
+                <form id="removeForm" autocomplete="off" onsubmit="return false;">
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label" for="removeForm-bookNumber">书号</label>
+                        <div class="col-sm-10">
+                            <input type="number" class="form-control" name="number" id="removeForm-bookNumber"/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <button class="btn btn-primary" id="removeButton">下架</button>
+                    </div>
+                </form>
+            </div>
+            <!-- 更新表单 -->
+            <div class="tab-pane fade" role="tabpanel" aria-labelledby="update-tab" id="update">
+                <form id="updateForm" autocomplete="off" onsubmit="return false;">
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label" for="updateForm-bookNumber">书号</label>
+                        <div class="col-sm-10">
+                            <input type="number" class="form-control" name="number" id="updateForm-bookNumber"/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label" for="updateForm-bookName">书名</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="name" id="updateForm-bookName"/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label" for="updateForm-bookAuthor">作者</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="author" id="updateForm-bookAuthor"/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <label class="col-sm-2 col-form-label" for="updateForm-bookOwner">书主</label>
+                        <div class="col-sm-10">
+                            <input type="text" class="form-control" name="owner" id="updateForm-bookOwner"/>
+                        </div>
+                    </div>
+                    <div class="form-group row">
+                        <button class="btn btn-primary" id="updateButton">更新</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- modal提示 -->
+    <div class="modal fade bs-example-modal-sm" id="messageModal" aria-hidden="true" tabindex="-1" role="dialog" aria-labelledby="myTipTitle">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header" style="color: #FFF;">
+                    <h4 class="modal-title" id="myTipTitle">消息提示</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body"></div> 
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- 自定义功能 -->
+    <script type="text/javascript" src="/sharejs/js/leancloud.config.js"></script>
+    <script type="text/javascript" src="/sharejs/js/shared.bookshelf.operation.js"></script>
+</body>
+</html>

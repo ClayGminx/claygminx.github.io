@@ -1,0 +1,119 @@
+
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <title>溪水旁共享书架</title>
+    <meta charset="UTF-8"/>
+    <meta name="robots" content="nofollow"/>
+    <meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2"/>
+    <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon.png"/>
+    <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32.png"/>
+    <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16.png"/>
+    <link rel="mask-icon" href="/images/safari-pinned-tab.svg" color="#222"/>
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/css/bootstrap.min.css"/>
+    <link rel="stylesheet" href="/sharejs/css/shared.bookshelf.css"/>
+    <script src="https://cdn.jsdelivr.net/npm/jquery@3.5.1/dist/jquery.slim.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/popper.js@1.16.1/dist/umd/popper.min.js"></script>
+    <script src="https://cdn.jsdelivr.net/npm/bootstrap@4.6.0/dist/js/bootstrap.min.js"></script>
+    <script type="text/javascript" src="//cdn.jsdelivr.net/npm/leancloud-storage@4.10.0/dist/av-live-query-min.js"></script>
+</head>
+<body style="margin: 0 0.5em;">
+    <!-- 滚动提示 -->
+    <div class="alert alert-primary alert-dismissible">
+        <button type="button" class="close" data-dismiss="alert">&times;</button>
+        <span>左右滚动查看全部内容</span>
+    </div>
+    <!-- 订阅提示 -->
+    <div id="subscribeTips"></div>
+    <!-- 书架标题 -->
+    <div class="bookshelf-heading">
+        <span>📚溪水旁共享书架</span>
+        <a id="searchAnchor"
+           title="查找您想要的图书"
+           style="position:relative; cursor:pointer; color: #007bff"
+           data-toggle="modal"
+           data-target="#searchModal">
+            <svg xmlns="http://www.w3.org/2000/svg" width="16" height="16" fill="currentColor" class="bi bi-search" viewBox="0 0 16 16"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/></svg>
+        </a>
+    </div>
+    <!-- 书架表格 -->
+    <div id="bookList" class="table-responsive">
+        <table class="table table-striped">
+            <thead>
+                <tr class="table-dark text-dark">
+                    <td>书号</td>
+                    <td>状态</td>
+                    <td>书名</td>
+                    <td>作者</td>
+                    <td>书主</td>
+                    <td>上架时间</td>
+                    <td>借阅人</td>
+                    <td>借阅时间</td>
+                    <td>应还时间</td>
+                </tr>
+            </thead>
+            <tbody class="table-striped table-condensed"></tbody>
+        </table>
+    </div>
+    <!-- 分页 -->
+    <div id="pagination" style="display: none;">
+        <ul class="pagination">
+            <li class="page-item" id="pagination-previous"><a href="javascript:void(0);" class="page-link">&laquo;</a></li>
+            <li class="page-item pagination-number active"><a href="javascript:void(0);" class="page-link">1</a></li>
+            <li class="page-item pagination-number"><a href="javascript:void(0);" class="page-link">2</a></li>
+            <li class="page-item pagination-number"><a href="javascript:void(0);" class="page-link">3</a></li>
+            <li class="page-item pagination-number"><a href="javascript:void(0);" class="page-link">4</a></li>
+            <li class="page-item pagination-number"><a href="javascript:void(0);" class="page-link">5</a></li>
+            <li class="page-item" id="pagination-next"><a href="javascript:void(0);" class="page-link">&raquo;</a></li>
+        </ul>
+    </div>
+    <!-- modal提示 -->
+    <div class="modal fade bs-example-modal-sm" id="messageModal" aria-hidden="true" tabindex="-1" role="dialog" aria-labelledby="myTipTitle">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <h4 class="modal-title" id="myTipTitle">消息提示</h4>
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                </div>
+                <div class="modal-body"></div> 
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-primary" data-dismiss="modal">关闭</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <!-- modal查找 -->
+    <div class="modal fade bs-example-modal-lg"
+         tabindex="-1"
+         role="dialog"
+         aria-hidden="true"
+         id="searchModal">
+        <div class="modal-dialog modal-lg" role="document">
+            <div class="modal-content">
+                <form class="form-horizontal" role="form" action="#" onsubmit="return false;">
+                    <div class="modal-body">
+                        <table>
+                            <tr>
+                                <td style="width:32px;">
+                                    <span style="display: inline-block; fill: #4285f4; position: relative; top: 4px; left: 2px; color: #007bff">
+                                        <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" fill="currentColor" class="bi bi-search" viewBox="0 0 24 24"><path d="M11.742 10.344a6.5 6.5 0 1 0-1.397 1.398h-.001c.03.04.062.078.098.115l3.85 3.85a1 1 0 0 0 1.415-1.414l-3.85-3.85a1.007 1.007 0 0 0-.115-.1zM12 6.5a5.5 5.5 0 1 1-11 0 5.5 5.5 0 0 1 11 0z"/></svg>
+                                    </span>
+                                </td>
+                                <td>
+                                    <input type="search" placeholder="输入书名，或作者，或书主进行查找"/>
+                                </td>
+                            </tr>
+                        </table>
+                    </div>
+                    <div class="modal-footer form-group">
+                        <button class="btn btn-light" id="searchButton">查找</button>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+    <!-- 自定义功能 -->
+    <script type="text/javascript" src="/sharejs/js/leancloud.config.js"></script>
+    <script type="text/javascript" src="/sharejs/js/shared.bookshelf.js"></script>
+</body>
+</html>

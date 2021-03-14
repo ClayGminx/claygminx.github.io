@@ -1,0 +1,3 @@
+User-agent: *
+Disallow: /2021/02/20/Shared-Bookshelf-Operation/
+Disallow: /2021/02/12/Shared-Bookshelf/
